@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 const app = express();
 const usermanagement = require("./routes/UserManagementroutes");
@@ -7,6 +8,7 @@ const enrollcourses = require("./routes/CourseEnrollmentDetailsRoutes");
 const { connectDb } = require("./config/database");
 
 app.use(express.json());
+app.use(cors());
 
 // signup and login
 app.use("/api/otp",usermanagement);
