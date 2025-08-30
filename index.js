@@ -8,7 +8,7 @@ const enrollcourses = require("./routes/CourseEnrollmentDetailsRoutes");
 const { connectDb } = require("./config/database");
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin : "*"}));
 
 // signup and login
 app.use("/api/otp",usermanagement);
