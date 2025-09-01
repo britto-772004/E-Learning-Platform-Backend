@@ -4,23 +4,51 @@ const coursedetails = new mongoose.Schema({
     courseId : {
         type : String,
         unique : true,
-        require : true
+        required : true
     },
     courseName : {
         type : String,
-        require : true
+        required : true
     },
     teacherId :{
         type : mongoose.Schema.Types.ObjectId,
-        require : true
+        required : true
     },
     teacherName : {
         type : String,
-        require : true
+        required : true
     },
     courseDuration : {
         type : Number,
-        require : true
+        required : true
+    },
+    StudentsEnrolled : {
+        type : Number,
+        required : true,
+        default : 0
+    },
+    StudentsCompleted : {
+        type :  Number,
+        required : true,
+        default : 0
+    },
+    mode : {
+        type : String,
+        enum : ["Free","Subscription"],
+        required : true,
+        default : "Free"
+    },
+    reviewStar : {
+        type : Number,
+        min : 0,
+        max : 5,
+        required : true,
+        default : 0
+    },
+    peopleReviewCount : {
+        type : Number,
+        required : true,
+        default : 0
     },
     createdAt : {
         type : Date,

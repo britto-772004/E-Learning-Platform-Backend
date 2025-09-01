@@ -1,12 +1,14 @@
 const {Usermanagement} = require("../models/UserManagementModel");
 const bcrypt = require("bcrypt");
 
-const {generateToken} = require("../middleware/token");
+const {generateAccessToken,generateRefreshToken} = require("../middleware/token");
 
 const signUp = async (req ,res)=>{
-    const emailId = req.query.emailId;
-    const password = req.query.password;
-    const role = req.query.role;
+    // const emailId = req.body;
+    // const password = req.;
+    // const role = req.query.role;
+
+    const {emailId,password,role} = req.body;
 
     try{
         let result = await Usermanagement.findOne({emailId:emailId});
@@ -31,8 +33,10 @@ const signUp = async (req ,res)=>{
 };
 
 const signIn = async (req,res)=>{
-    const emailId = req.query.emailId;
-    const password = req.query.password;
+    // const emailId = req.query.emailId;
+    // const password = req.query.password;
+
+    const {emailId,password} = req.body;
     try{
         const result = await Usermanagement.findOne({emailId: emailId});
         if(!result){
@@ -50,15 +54,23 @@ const signIn = async (req,res)=>{
             role : result.role,
             id : result._id
         }
-        const token = await generateToken(payload);
-        return res.status(200).json({success : true,message : "authenticated user",token : token});
+        const accessToken = await generateAccessToken(payload);
+        const refreshToken = await generateRefreshToken(payload);
+        await Usermanagement.findOneAndUpdate({emailId:emailId},{$set : {refreshtoken:refreshToken}});
+        res.cookie("refreshtoken",refreshToken,{
+            httpOnly : true,
+            secure : true,
+            sameSite : "strict",
+        });
+        return res.status(200).json({success : true,message : "authenticated user",accessToken : accessToken});
 
 
     }
     catch(error){
-        console.log("error in the database fetching");
+        console.log("error in the database fetching",error);
         return res.status(500).json({success : false , message : error});
     }
 };
+
 
 module.exports = {signIn,signUp};

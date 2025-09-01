@@ -1,8 +1,21 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const generateToken = async (payload)=>{
-    const jwtSecretKey = process.env.jwtSecretKey;
+const generateAccessToken = async (payload)=>{
+    const jwtSecretKey = process.env.jwtSecretKeyAccessToken;
+    try{
+        const token = await jwt.sign(payload,jwtSecretKey);
+        return token;
+    }
+    catch(error){
+        console.log("error in jwt token generation ",token);
+        return null;
+    }
+    
+};
+
+const generateRefreshToken = async (payload)=>{
+    const jwtSecretKey = process.env.jwtSecretKeyRefreshToken;
     try{
         const token = await jwt.sign(payload,jwtSecretKey);
         return token;
@@ -43,4 +56,4 @@ const validateToken = async (req ,res ,next)=>{
     
 };
 
-module.exports = {generateToken,validateToken};
+module.exports = {generateAccessToken,generateRefreshToken,validateToken};

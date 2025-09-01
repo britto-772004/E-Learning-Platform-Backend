@@ -3,16 +3,21 @@ const mongoose = require("mongoose");
 const usermanagementSchema = new mongoose.Schema({
     emailId : {
         type : String,
-        require : true,
+        required : true,
         unique : true
     },
     password : {
         type : String,
-        require : true
+        required : true
     },
     role : {
         type : String,
-        require : true
+        required : true
+    },
+    refreshtoken : {
+        type : String,
+        required : true,
+        default : ""
     },
     createdAt : {
         type : Date,

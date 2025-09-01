@@ -9,20 +9,21 @@ const createCourse = async (req ,res)=>{
         return res.status(400).json({success :false,message : "Permission denied"});
     }
 
-    const {courseId,courseName,courseDuration,teacherName} = req.body;
+    // const {courseId,courseName,courseDuration,teacherName} = req.body;
+    const data = req.body;
 
     try{
-        let data = {
-            courseId : courseId,
-            courseName : courseName,
-            teacherId : req.user.id,
-            teacherName : teacherName,
-            courseDuration : courseDuration
-        };
+        // let data = {
+        //     courseId : courseId,
+        //     courseName : courseName,
+        //     teacherId : req.user.id,
+        //     teacherName : teacherName,
+        //     courseDuration : courseDuration
+        // };
 
         console.log("data : ",data);
 
-        const result = await Coursedetails.findOne({courseId : courseId});
+        const result = await Coursedetails.findOne({courseId : data.courseId});
         if(result){
             console.log("course already created ");
             return res.status(400).json({success : false,message : "already created"});
